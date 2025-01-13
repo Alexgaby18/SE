@@ -1,26 +1,13 @@
 import flet as ft
+from components.container_protozoario import container_protozoario
 
 
 def main(page: ft.Page):
-    counter = ft.Text("0", size=50, data=0)
 
-    def increment_click(e):
-        counter.data += 1
-        counter.value = str(counter.data)
-        counter.update()
+    page.bgcolor = ft.colors.WHITE #Color de fondo de la ventana
 
-    page.floating_action_button = ft.FloatingActionButton(
-        icon=ft.Icons.ADD, on_click=increment_click
-    )
     page.add(
-        ft.SafeArea(
-            ft.Container(
-                counter,
-                alignment=ft.alignment.center,
-            ),
-            expand=True,
-        )
-    )
-
+        container_protozoario()) #Pa que vean alguito en la ventana si corren la interfaz :3...
+                                 #aun se estan haciendo los demás componentes, comando: flet run
 
 ft.app(main)
