@@ -30,33 +30,42 @@ features = [
     (1, 1, 2, 1, 1, 1, 1),  # Anélidos
     (1, 1, 2, 2, 1, 1, 0),  # Moluscos
     (1, 1, 2, 2, 2, 1, 1),  # Artrópodos
-    (1, 1, 2, 2, 2, 1, 0)   # Cordados
+    (1, 1, 2, 2, 2, 1, 0),  # Cordados
+    (1, 1, 1, 1, 1, 1, 1), # Equinodermosl
 ]
 
 
-targets = [0, 1, 2, 3, 4, 5, 6, 7, 8] 
+targets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
 
 # Convertir listas a arrays de NumPy
 features = np.array(features)
 targets = np.array(targets)
 
 # modelo con más capas y neuronas
-modelo = tf.keras.Sequential([
-    tf.keras.layers.Dense(units=16, input_shape=[7], activation='relu'),  # Primera capa oculta con 16 neuronas
-    tf.keras.layers.Dense(units=32, activation='relu'),  # Segunda capa oculta con 32 neuronas
-    tf.keras.layers.Dense(units=16, activation='relu'),  # Tercera capa oculta con 16 neuronas
-    tf.keras.layers.Dense(units=9, activation='softmax')  # Capa de salida con 9 neuronas (una por cada clase)
-])
+"""modelo = tf.keras.Sequential([
+    tf.keras.layers.Dense(units=7, input_shape=[7], activation='relu'),  # Primera capa oculta con 16 neuronas
+    tf.keras.layers.Dense(units=128, activation='relu'),  # Segunda capa oculta con 32 neuronas
+    tf.keras.layers.Dense(units=64, activation='relu'),  # Tercera capa oculta con 16 neuronas
+    tf.keras.layers.Dense(units=32, activation='relu'),
+    tf.keras.layers.Dense(units=10, activation='softmax')  # Capa de salida con 9 neuronas (una por cada clase)
+])"""
+input = tf.keras.Input(shape=(7,))
+x = tf.keras.layers.Dense(units=128, activation='relu')(input)
+x = tf.keras.layers.Dense(units=64, activation='relu')(x)
+x = tf.keras.layers.Dense(units=128, activation='relu')(x)
+output = tf.keras.layers.Dense(units=10, activation='softmax')(x)
+
+modelo = tf.keras.Model(inputs= input,outputs = output)
 
 # Compilar el modelo
 modelo.compile(
-    optimizer=tf.keras.optimizers.Adam(0.001),
+    optimizer=tf.keras.optimizers.Adam(),
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
 
 print('Inicio de entrenamiento...')
-historial = modelo.fit(features, targets, epochs=500, batch_size=5, validation_split=0.2, verbose=True)
+historial = modelo.fit(features, targets, epochs=200, batch_size=10, validation_split=0.2, verbose=True)
 print('Modelo entrenado!')
 
 # Visualizar la pérdida y la precisión durante el entrenamiento
