@@ -30,61 +30,36 @@ features = [
     (1, 1, 2, 1, 1, 1, 1),  # Anélidos
     (1, 1, 2, 2, 1, 1, 0),  # Moluscos
     (1, 1, 2, 2, 2, 1, 1),  # Artrópodos
-    (1, 1, 2, 2, 2, 1, 0),  # Cordados
-    (1, 1, 1, 1, 1, 1, 1), # Equinodermosl
+    (1, 1, 2, 2, 2, 1, 0),   # Cordados
+    (1, 1, 1, 0, 0, 0, 0),   # Equinodermos
+    (1, 1, 1, 2, 2, 1, 0),   # Nemertinos
+    (1, 1, 2, 1, 1, 0, 0),   # Acantocefalo
+    (1, 1, 2, 1, 0, 0, 0)   # asquelmitos
 ]
 
 
-targets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
+targets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12] 
 
 # Convertir listas a arrays de NumPy
 features = np.array(features)
 targets = np.array(targets)
 
 # modelo con más capas y neuronas
-"""modelo = tf.keras.Sequential([
-    tf.keras.layers.Dense(units=7, input_shape=[7], activation='relu'),  # Primera capa oculta con 16 neuronas
-    tf.keras.layers.Dense(units=128, activation='relu'),  # Segunda capa oculta con 32 neuronas
-    tf.keras.layers.Dense(units=64, activation='relu'),  # Tercera capa oculta con 16 neuronas
-    tf.keras.layers.Dense(units=32, activation='relu'),
-    tf.keras.layers.Dense(units=10, activation='softmax')  # Capa de salida con 9 neuronas (una por cada clase)
-])"""
-input = tf.keras.Input(shape=(7,))
-x = tf.keras.layers.Dense(units=128, activation='relu')(input)
-x = tf.keras.layers.Dense(units=64, activation='relu')(x)
-x = tf.keras.layers.Dense(units=128, activation='relu')(x)
-output = tf.keras.layers.Dense(units=10, activation='softmax')(x)
-
-modelo = tf.keras.Model(inputs= input,outputs = output)
+modelo = tf.keras.Sequential([
+    tf.keras.layers.Dense(units=13, input_shape=[7], activation='sigmoid'),  # Primera capa oculta con 16 neuronas
+])
 
 # Compilar el modelo
 modelo.compile(
-    optimizer=tf.keras.optimizers.Adam(),
+    optimizer=tf.keras.optimizers.Adam(0.1),
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy']
 )
 
 print('Inicio de entrenamiento...')
-historial = modelo.fit(features, targets, epochs=200, batch_size=10, validation_split=0.2, verbose=True)
+historial = modelo.fit(features, targets, epochs=50, verbose=True)
 print('Modelo entrenado!')
 
-# Visualizar la pérdida y la precisión durante el entrenamiento
-plt.figure(figsize=(12, 4))
-plt.subplot(1, 2, 1)
-plt.xlabel('#Época')
-plt.ylabel('Pérdida')
-plt.plot(historial.history['loss'], label='Pérdida de entrenamiento')
-plt.plot(historial.history['val_loss'], label='Pérdida de validación')
-plt.legend()
-
-plt.subplot(1, 2, 2)
-plt.xlabel('#Época')
-plt.ylabel('Precisión')
-plt.plot(historial.history['accuracy'], label='Precisión de entrenamiento')
-plt.plot(historial.history['val_accuracy'], label='Precisión de validación')
-plt.legend()
-
-plt.show()
 
 
 modelo.save('phylum_model_mejorado.h5')
