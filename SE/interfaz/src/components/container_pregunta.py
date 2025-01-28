@@ -2,9 +2,7 @@ import flet as ft
 
 class container_pregunta(ft.Container):
     def __init__(self,pregunta):
-        super().__init__()
-        self.content = ft.Column([
-            ft.Text(pregunta,
+        self.pregunt = ft.Text(pregunta,
                     style=ft.TextStyle(
                         color=ft.colors.BLUE_GREY_900,
                         font_family="Roboto Condensed",
@@ -12,6 +10,8 @@ class container_pregunta(ft.Container):
                         size=28),
                         text_align = ft.TextAlign.CENTER
                         )
+        super().__init__()
+        self.content = ft.Column([self.pregunt
         ],
         alignment = ft.MainAxisAlignment.SPACE_EVENLY,
         horizontal_alignment = ft.CrossAxisAlignment.CENTER)
