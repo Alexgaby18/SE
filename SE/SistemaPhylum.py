@@ -24,16 +24,16 @@ Ambiente (0: Acuático, 1: Terrestre) """
 features = [
     (0, 0, 0, 0, 0, 0, 0),  # Protozoarios
     (1, 0, 1, 0, 0, 0, 0),  # Poríferos
-    (1, 1, 1, 0, 0, 0, 1),  # Cnidarios
-    (1, 1, 1, 1, 0, 1, 0),  # Ctenóforos
-    (1, 1, 2, 0, 1, 0, 1),  # Platelmintos
-    (1, 1, 2, 1, 1, 1, 1),  # Anélidos
+    (1, 1, 1, 0, 0, 0, 0),  # Cnidarios
+    (1, 1, 1, 0, 0, 1, 0),  # Ctenóforos
+    (1, 1, 2, 0, 0, 0, 0),  # Platelmintos
+    (1, 1, 2, 2, 1, 1, 1),  # Anélidos
     (1, 1, 2, 2, 1, 1, 0),  # Moluscos
     (1, 1, 2, 2, 2, 1, 1),  # Artrópodos
     (1, 1, 2, 2, 2, 1, 0),   # Cordados
-    (1, 1, 1, 0, 0, 0, 0),   # Equinodermos
-    (1, 1, 1, 2, 2, 1, 0),   # Nemertinos
-    (1, 1, 2, 1, 1, 0, 0),   # Acantocefalo
+    (1, 1, 0, 0, 0, 0, 0),   # Equinodermos
+    (1, 1, 2, 0, 0, 1, 0),   # Nemertinos
+    (1, 1, 2, 1, 0, 1, 0),   # Acantocefalo
     (1, 1, 2, 1, 0, 0, 0)   # asquelmitos
 ]
 
