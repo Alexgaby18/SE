@@ -62,4 +62,4 @@ print('Modelo entrenado!')
 
 
 
-modelo.save('phylum_model_mejorado.h5')
+modelo.save('SE/phylum_model_mejorado.h5')
