@@ -19,6 +19,8 @@ from components.boton_respuesta import boton_respuesta
 def main(page: ft.Page):
 
     page.bgcolor = ft.colors.WHITE #Color de fondo de la ventana
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
  
  #FUNCIONES CAPTURADORAS DE EVENTOS DE LOS BOTONES RESPUESTA
     def Unicelular(e):
@@ -30,7 +32,11 @@ def main(page: ft.Page):
         return
     
     def Multicelular(e):
-        Pregunta.pregunt.value = "Tu organismo posee tejidos verdaderos?"
+        # Pregunta.pregunt.value = "Tu organismo posee tejidos verdaderos?"
+        Pregunta.actualizar_pregunta(
+            "Tu organismo posee tejidos verdadederos?",
+            nuevos_enlaces={"tejidos": "https://academia-lab.com/enciclopedia/tejido-biologia/"}
+        )
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
         page.add(BotonRespuesta_No,
@@ -42,11 +48,15 @@ def main(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
-        page.add(ft.Column(container_poriferos()))
+        page.add(container_poriferos())
         return
     
     def Si(e):
-        Pregunta.pregunt.value = "Que tipo de simetria tiene tu organismo?"
+        # Pregunta.pregunt.value = "Que tipo de simetria tiene tu organismo?"
+        Pregunta.actualizar_pregunta(
+            "Que tipo de simetria tiene tu organismo?",
+            nuevos_enlaces={"simetria": "https://animalesbiologia.com/zoologia/simetria-en-los-animales-tipos-partes"}
+        )
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
         page.add(BotonRespuesta_RadialSecundario,
@@ -65,7 +75,11 @@ def main(page: ft.Page):
         return
     
     def Radial(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
@@ -75,7 +89,13 @@ def main(page: ft.Page):
         return
     
     def Bilateral(e):
-        Pregunta.pregunt.value = "Que tipo de revestimiento tiene?"
+        # Pregunta.pregunt.value = "Que tipo de revestimiento tiene?"
+        Pregunta.actualizar_pregunta(
+            "Que tipo de revestimiento tiene: acelomado, pseudocelomado o celomado?",
+            nuevos_enlaces={"acelomado": "https://www.lifeder.com/acelomados/",
+            "pseudocelomado": "https://www.lifeder.com/pseudocelomados/",
+            "celomado": "https://www.lifeder.com/celoma/"}
+        )
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
@@ -103,7 +123,11 @@ def main(page: ft.Page):
         return
 
     def Acelomados(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -113,7 +137,11 @@ def main(page: ft.Page):
         return
     
     def Pseudocelomados(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -123,7 +151,12 @@ def main(page: ft.Page):
         return
 
     def Celomados(e):
-        Pregunta.pregunt.value = "Son esquixocelomados o enterocelomados?"
+        # Pregunta.pregunt.value = "Son esquixocelomados o enterocelomados?"
+        Pregunta.actualizar_pregunta(
+            "Son esquizocelomados o enterocelomados?",
+            nuevos_enlaces={"esquizocelomados": "https://es.wikipedia.org/wiki/Esquizocelomados",
+            "enterocelomados": "https://es.wikipedia.org/wiki/Enterocelomados"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -173,7 +206,13 @@ def main(page: ft.Page):
         return
     
     def Esquizocelomados(e):
-        Pregunta.pregunt.value = "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?"
+        # Pregunta.pregunt.value = "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?",
+            nuevos_enlaces={"manto": "https://leerciencia.net/los-moluscos-caracteristicas-clasificacion-y-estructura-corporal/",
+            "hidrostatico": "https://www.lifeder.com/hidroesqueleto/",
+            "exoesqueleto": "https://es.wikipedia.org/wiki/Exoesqueleto"}
+        )
         page.controls.remove(BotonRespuesta_Enterocelomados)
         page.controls.remove(BotonRespuesta_Esquizocelomados)
         page.add(BotonRespuesta_MantoYconcha,
@@ -242,7 +281,13 @@ def main(page: ft.Page):
     BotonRespuesta_Esqueleto = boton_respuesta('Esqueleto hidrostatico', on_click = Esqueleto)
     BotonRespuesta_Exoesqueleto = boton_respuesta('Exoesqueleto', on_click = Exoesqueleto)
 
-    Pregunta = container_pregunta('Tu organismo es unicelular o multicelular?')
+    Pregunta = container_pregunta(
+        pregunta="¿Tu organismo es unicelular o multicelular?",
+        palabras_enlaces={
+            "unicelular": "https://concepto.de/organismos-unicelulares/",
+            "multicelular": "https://knoow.net/es/ciencias-tierra-vida/biologia-es/organismos-multicelulares/"
+        }
+    )
 
     page.add(
         Pregunta,
