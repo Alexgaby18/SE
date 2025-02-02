@@ -15,6 +15,7 @@ from components.container_anelidos import container_anelidos
 from components.container_artropodos import container_artropodos
 from components.container_pregunta import container_pregunta
 from components.boton_respuesta import boton_respuesta
+from components.boton_atras import boton_atras
 
 
 # Página de inicio
@@ -344,10 +345,17 @@ def pagina_resultado(page: ft.Page,resultado: ft.Container,phylum: str):
                         size=28),
                         text_align = ft.TextAlign.JUSTIFY
                         )
+    def regresar(e):
+        page.controls.clear()  # Limpiar la página actual
+        pagina_inicio(page)  # Reiniciar el ciclo
+        page.update()
+
+    botonAtras = boton_atras(on_click=regresar)
+
     page.controls.clear()
-    page.add(resultados,phylumDeterminado)
+    page.add(resultados, phylumDeterminado,  botonAtras)
     page.update()
-    
+
 
     return
 # Función para cambiar a la página de identificación
