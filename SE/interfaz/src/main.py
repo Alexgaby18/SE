@@ -20,7 +20,7 @@ from components.boton_respuesta import boton_respuesta
 # Página de inicio
 def pagina_inicio(page: ft.Page):
     page.title = "Sistema de Identificación de Phylum"
-    page.theme_mode = 'light'
+    page.theme_mode = 'light' #Modo de la pagina
 
     # Crear los componentes de la interfaz
     titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed")
@@ -65,6 +65,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
+        pagina_resultado(page,container_protozoario(),'Protozoario')
         page.add(container_protozoario())
         page.update()
         return
@@ -286,7 +287,7 @@ def pagina_identificacion(page: ft.Page):
         page.update()
         return
     
-    #BOTONES DE RESPUESTA A LAS PREGUNTAS
+    #INSTANCIA BOTONES DE RESPUESTA A LAS PREGUNTAS
     
     #Tu organismo es unicelular o multicelular?
     BotonRespuesta_Unicelular = boton_respuesta('Unicelular', on_click = Unicelular)
@@ -330,13 +331,30 @@ def pagina_identificacion(page: ft.Page):
     # Mostrar la primera pregunta y los botones
     page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
 
+def pagina_resultado(page: ft.Page,resultado: ft.Container,phylum: str):
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    resultados = ft.Text("RESULTADOS", size=50, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
+    resultado = 'El Phylum determinado es: ' + phylum
+    phylumDeterminado = ft.Text(resultado,
+                    style=ft.TextStyle(
+                        color=ft.colors.BLUE_GREY_900,
+                        font_family="Roboto Condensed",
+                        weight="bold",
+                        size=28),
+                        text_align = ft.TextAlign.JUSTIFY
+                        )
+    page.controls.clear()
+    page.add(resultados,phylumDeterminado)
+    page.update()
+    
 
+    return
 # Función para cambiar a la página de identificación
 def mostrar_pagina_identificacion(page: ft.Page):
     page.controls.clear()  # Limpiar la página actual
     pagina_identificacion(page)  # Mostrar la página de identificación
     page.update()
-
 
 # Ejecutar la aplicación
 ft.app(target=pagina_inicio)
