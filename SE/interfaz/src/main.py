@@ -23,7 +23,7 @@ def pagina_inicio(page: ft.Page):
     page.theme_mode = 'light' #Modo de la pagina
 
     # Crear los componentes de la interfaz
-    titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed")
+    titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
     boton_iniciar = ElevatedButton("Iniciar", color=ft.colors.WHITE, on_click=lambda e: mostrar_pagina_identificacion(page), width=200, height=50, bgcolor=ft.colors.BLUE_900)
 
     # Configurar la imagen de fondo con bordes redondeados
