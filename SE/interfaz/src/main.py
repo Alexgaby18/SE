@@ -20,6 +20,7 @@ from components.boton_respuesta import boton_respuesta
 # Página de inicio
 def pagina_inicio(page: ft.Page):
     page.title = "Sistema de Identificación de Phylum"
+    page.theme_mode = 'light'
 
     # Crear los componentes de la interfaz
     titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed")
