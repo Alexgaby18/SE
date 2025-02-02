@@ -1,4 +1,5 @@
 import flet as ft
+from flet import Page, Text, ElevatedButton, Column, Row, Image, Container, border_radius, padding, margin
 from components.container_protozoario import container_protozoario
 from components.container_poriferos import container_poriferos
 from components.container_equinodermos import container_equinodermos
@@ -16,7 +17,43 @@ from components.container_pregunta import container_pregunta
 from components.boton_respuesta import boton_respuesta
 
 
-def main(page: ft.Page):
+# Página de inicio
+def pagina_inicio(page: ft.Page):
+    page.title = "Sistema de Identificación de Phylum"
+
+    # Crear los componentes de la interfaz
+    titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed")
+    boton_iniciar = ElevatedButton("Iniciar", color=ft.colors.WHITE, on_click=lambda e: mostrar_pagina_identificacion(page), width=200, height=50, bgcolor=ft.colors.BLUE_900)
+
+    # Configurar la imagen de fondo con bordes redondeados
+    fondo = Image(src="../assets/phylum.jpg", fit="cover", height=600, width=500, border_radius=20)
+    imagen_contenedor = Container(
+        content=fondo,
+        border_radius=border_radius.all(20),
+        padding=padding.all(10),
+        margin=margin.all(20)
+    )
+
+    # Crear el diseño de la interfaz
+    columna_izquierda = Column(
+        [titulo, Container(boton_iniciar, alignment=ft.alignment.center)],
+        alignment="center",
+        spacing=40,
+        expand=True
+    )
+
+    fila_principal = Row(
+        [Container(columna_izquierda, padding=padding.all(40), expand=True), imagen_contenedor],
+        alignment="spaceBetween",
+        vertical_alignment="center",
+        expand=True
+    )
+
+    # Agregar margen general a la página
+    page.add(Container(fila_principal, padding=padding.all(20)))
+
+
+def pagina_identificacion(page: ft.Page):
 
     page.bgcolor = ft.colors.WHITE #Color de fondo de la ventana
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -289,8 +326,16 @@ def main(page: ft.Page):
         }
     )
 
-    page.add(
-        Pregunta,
-        BotonRespuesta_Unicelular,
-        BotonRespuesta_Multicelular) #comando: flet run
-ft.app(main)
+    # Mostrar la primera pregunta y los botones
+    page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
+
+
+# Función para cambiar a la página de identificación
+def mostrar_pagina_identificacion(page: ft.Page):
+    page.controls.clear()  # Limpiar la página actual
+    pagina_identificacion(page)  # Mostrar la página de identificación
+    page.update()
+
+
+# Ejecutar la aplicación
+ft.app(target=pagina_inicio)
