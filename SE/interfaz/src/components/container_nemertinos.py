@@ -23,7 +23,7 @@ class container_nemertinos(ft.Container):
         self.margin= 10
         self.padding= 10
         self.bgcolor= ft.Colors.WHITE10
-        self.width= 300
+        self.width= 400
         self.height= 400
         self.border_radius= 10
         self.border = ft.border.all(2,ft.Colors.TEAL_900)
