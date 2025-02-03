@@ -264,9 +264,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_poriferos(),"Poriferos")
-        page.add(container_moluscos())
-        page.update()
+        pagina_resultado(page,container_moluscos(),"Moluscos")
         return
     
     def Esqueleto(e):
@@ -274,9 +272,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_poriferos(),"Poriferos")
-        page.add(container_anelidos())
-        page.update()
+        pagina_resultado(page,container_anelidos(),"Anelidos")
         return
     
     def Exoesqueleto(e):
@@ -284,9 +280,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_poriferos(),"Poriferos")
-        page.add(container_artropodos())
-        page.update()
+        pagina_resultado(page,container_artropodos(),"Artropodos")
         return
     
     #INSTANCIA BOTONES DE RESPUESTA A LAS PREGUNTAS
