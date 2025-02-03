@@ -66,9 +66,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
-        pagina_resultado(page,container_protozoario(),'Protozoario')
-        page.add(container_protozoario())
-        page.update()
+        pagina_resultado(page,container_protozoario(),"Protozoario")
         return
     
     def Multicelular(e):
@@ -88,7 +86,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
-        page.add(container_poriferos())
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         return
     
     def Si(e):
@@ -110,8 +108,8 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
-        page.add(container_equinodermos())
-        page.update()
+        pagina_resultado(page,container_equinodermos(),"Equinodermos")
+
         return
     
     def Radial(e):
@@ -150,16 +148,16 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        page.add(container_ctenoforos())
-        page.update()
+        pagina_resultado(page,container_ctenoforos(),"Ctenoforos")
+
         return
     
     def RadialIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        page.add(container_cnidarios())
-        page.update()
+        pagina_resultado(page,container_cnidarios(),"Cnidarios")
+
         return
 
     def Acelomados(e):
@@ -209,40 +207,40 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        page.add(container_nemertinos())
-        page.update()
+        pagina_resultado(page,container_nemertinos(),"Nemertinos")
+
         return
     
     def AcelomadosIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        page.add(container_platelmintos())
-        page.update()
+        pagina_resultado(page,container_platelmintos(),"Platelmintos")
+
         return
 
     def PseudocelomadosCompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        page.add(container_acantocefalos())
-        page.update()
+        pagina_resultado(page,container_acantocefalos(),"Acantocefalos")
+
         return
 
     def PseudocelomadosIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        page.add(container_asquelmintos())
-        page.update()
+        pagina_resultado(page,container_asquelmintos(),"Asquelmintos")
+
         return
 
     def Enterocelomados(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Enterocelomados)
         page.controls.remove(BotonRespuesta_Esquizocelomados)
-        page.add(container_cordados())
-        page.update()
+        pagina_resultado(page,container_cordados(),"Cordados")
+        
         return
     
     def Esquizocelomados(e):
@@ -266,6 +264,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_moluscos())
         page.update()
         return
@@ -275,6 +274,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_anelidos())
         page.update()
         return
@@ -284,6 +284,7 @@ def pagina_identificacion(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_artropodos())
         page.update()
         return
@@ -332,7 +333,7 @@ def pagina_identificacion(page: ft.Page):
     # Mostrar la primera pregunta y los botones
     page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
 
-def pagina_resultado(page: ft.Page,resultado: ft.Container,phylum: str):
+def pagina_resultado(page: ft.Page,contenedor_resultado: ft.Container,phylum: str):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     resultados = ft.Text("RESULTADOS", size=50, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
@@ -353,7 +354,7 @@ def pagina_resultado(page: ft.Page,resultado: ft.Container,phylum: str):
     botonAtras = boton_atras(on_click=regresar)
 
     page.controls.clear()
-    page.add(resultados, phylumDeterminado,  botonAtras)
+    page.add(resultados, phylumDeterminado,contenedor_resultado,botonAtras)
     page.update()
 
 
