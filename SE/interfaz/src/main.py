@@ -19,7 +19,7 @@ from components.boton_atras import boton_atras
 import tensorflow as tf
 import numpy as np
 
-modelo = tf.keras.models.load_model("../../phylum_model_mejorado.h5")
+modelo = tf.keras.models.load_model("../phylum_model_mejorado.h5")
 
 etiquetas_phylum = [
     "Protozoarios", 
