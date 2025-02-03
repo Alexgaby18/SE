@@ -1,4 +1,5 @@
 import flet as ft
+from flet import Page, Text, ElevatedButton, Column, Row, Image, Container, border_radius, padding, margin
 from components.container_protozoario import container_protozoario
 from components.container_poriferos import container_poriferos
 from components.container_equinodermos import container_equinodermos
@@ -14,23 +15,66 @@ from components.container_anelidos import container_anelidos
 from components.container_artropodos import container_artropodos
 from components.container_pregunta import container_pregunta
 from components.boton_respuesta import boton_respuesta
+from components.boton_atras import boton_atras
 
 
-def main(page: ft.Page):
+# Página de inicio
+def pagina_inicio(page: ft.Page):
+    page.title = "Sistema de Identificación de Phylum"
+    page.theme_mode = 'light' #Modo de la pagina
+
+    # Crear los componentes de la interfaz
+    titulo = Text("Sistema de Identificación de Phylum", size=75, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
+    boton_iniciar = ElevatedButton("Iniciar", color=ft.colors.WHITE, on_click=lambda e: mostrar_pagina_identificacion(page), width=200, height=50, bgcolor=ft.colors.BLUE_900)
+
+    # Configurar la imagen de fondo con bordes redondeados
+    fondo = Image(src="../assets/phylum.jpg", fit="cover", height=600, width=500, border_radius=20)
+    imagen_contenedor = Container(
+        content=fondo,
+        border_radius=border_radius.all(20),
+        padding=padding.all(10),
+        margin=margin.all(20)
+    )
+
+    # Crear el diseño de la interfaz
+    columna_izquierda = Column(
+        [titulo, Container(boton_iniciar, alignment=ft.alignment.center)],
+        alignment="center",
+        spacing=40,
+        expand=True
+    )
+
+    fila_principal = Row(
+        [Container(columna_izquierda, padding=padding.all(40), expand=True), imagen_contenedor],
+        alignment="spaceBetween",
+        vertical_alignment="center",
+        expand=True
+    )
+
+    # Agregar margen general a la página
+    page.add(Container(fila_principal, padding=padding.all(20)))
+
+
+def pagina_identificacion(page: ft.Page):
 
     page.bgcolor = ft.colors.WHITE #Color de fondo de la ventana
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
  
  #FUNCIONES CAPTURADORAS DE EVENTOS DE LOS BOTONES RESPUESTA
     def Unicelular(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
-        page.add(container_protozoario())
-        page.update()
+        pagina_resultado(page,container_protozoario(),"Protozoario")
         return
     
     def Multicelular(e):
-        Pregunta.pregunt.value = "Tu organismo posee tejidos verdaderos?"
+        # Pregunta.pregunt.value = "Tu organismo posee tejidos verdaderos?"
+        Pregunta.actualizar_pregunta(
+            "Tu organismo posee tejidos verdadederos?",
+            nuevos_enlaces={"tejidos": "https://academia-lab.com/enciclopedia/tejido-biologia/"}
+        )
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
         page.add(BotonRespuesta_No,
@@ -42,11 +86,15 @@ def main(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
-        page.add(ft.Column(container_poriferos()))
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         return
     
     def Si(e):
-        Pregunta.pregunt.value = "Que tipo de simetria tiene tu organismo?"
+        # Pregunta.pregunt.value = "Que tipo de simetria tiene tu organismo?"
+        Pregunta.actualizar_pregunta(
+            "Que tipo de simetria tiene tu organismo?",
+            nuevos_enlaces={"simetria": "https://animalesbiologia.com/zoologia/simetria-en-los-animales-tipos-partes"}
+        )
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
         page.add(BotonRespuesta_RadialSecundario,
@@ -60,12 +108,16 @@ def main(page: ft.Page):
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
-        page.add(container_equinodermos())
-        page.update()
+        pagina_resultado(page,container_equinodermos(),"Equinodermos")
+
         return
     
     def Radial(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
@@ -75,7 +127,13 @@ def main(page: ft.Page):
         return
     
     def Bilateral(e):
-        Pregunta.pregunt.value = "Que tipo de revestimiento tiene?"
+        # Pregunta.pregunt.value = "Que tipo de revestimiento tiene?"
+        Pregunta.actualizar_pregunta(
+            "Que tipo de revestimiento tiene: acelomado, pseudocelomado o celomado?",
+            nuevos_enlaces={"acelomado": "https://www.lifeder.com/acelomados/",
+            "pseudocelomado": "https://www.lifeder.com/pseudocelomados/",
+            "celomado": "https://www.lifeder.com/celoma/"}
+        )
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
@@ -90,20 +148,24 @@ def main(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        page.add(container_ctenoforos())
-        page.update()
+        pagina_resultado(page,container_ctenoforos(),"Ctenoforos")
+
         return
     
     def RadialIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        page.add(container_cnidarios())
-        page.update()
+        pagina_resultado(page,container_cnidarios(),"Cnidarios")
+
         return
 
     def Acelomados(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -113,7 +175,11 @@ def main(page: ft.Page):
         return
     
     def Pseudocelomados(e):
-        Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene sistema digestivo completo o incompleto?",
+            nuevos_enlaces={"digestivo": "https://estudyando.com/sistemas-digestivos-completos-vs-incompletos/"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -123,7 +189,12 @@ def main(page: ft.Page):
         return
 
     def Celomados(e):
-        Pregunta.pregunt.value = "Son esquixocelomados o enterocelomados?"
+        # Pregunta.pregunt.value = "Son esquixocelomados o enterocelomados?"
+        Pregunta.actualizar_pregunta(
+            "Son esquizocelomados o enterocelomados?",
+            nuevos_enlaces={"esquizocelomados": "https://es.wikipedia.org/wiki/Esquizocelomados",
+            "enterocelomados": "https://es.wikipedia.org/wiki/Enterocelomados"}
+        )
         page.controls.remove(BotonRespuesta_Acelomados)
         page.controls.remove(BotonRespuesta_Pseudocelomados)
         page.controls.remove(BotonRespuesta_Celomados)
@@ -136,44 +207,50 @@ def main(page: ft.Page):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        page.add(container_nemertinos())
-        page.update()
+        pagina_resultado(page,container_nemertinos(),"Nemertinos")
+
         return
     
     def AcelomadosIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        page.add(container_platelmintos())
-        page.update()
+        pagina_resultado(page,container_platelmintos(),"Platelmintos")
+
         return
 
     def PseudocelomadosCompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        page.add(container_acantocefalos())
-        page.update()
+        pagina_resultado(page,container_acantocefalos(),"Acantocefalos")
+
         return
 
     def PseudocelomadosIncompleto(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        page.add(container_asquelmintos())
-        page.update()
+        pagina_resultado(page,container_asquelmintos(),"Asquelmintos")
+
         return
 
     def Enterocelomados(e):
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Enterocelomados)
         page.controls.remove(BotonRespuesta_Esquizocelomados)
-        page.add(container_cordados())
-        page.update()
+        pagina_resultado(page,container_cordados(),"Cordados")
+        
         return
     
     def Esquizocelomados(e):
-        Pregunta.pregunt.value = "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?"
+        # Pregunta.pregunt.value = "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?"
+        Pregunta.actualizar_pregunta(
+            "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?",
+            nuevos_enlaces={"manto": "https://leerciencia.net/los-moluscos-caracteristicas-clasificacion-y-estructura-corporal/",
+            "hidrostatico": "https://www.lifeder.com/hidroesqueleto/",
+            "exoesqueleto": "https://es.wikipedia.org/wiki/Exoesqueleto"}
+        )
         page.controls.remove(BotonRespuesta_Enterocelomados)
         page.controls.remove(BotonRespuesta_Esquizocelomados)
         page.add(BotonRespuesta_MantoYconcha,
@@ -187,6 +264,7 @@ def main(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_moluscos())
         page.update()
         return
@@ -196,6 +274,7 @@ def main(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_anelidos())
         page.update()
         return
@@ -205,11 +284,12 @@ def main(page: ft.Page):
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
+        pagina_resultado(page,container_poriferos(),"Poriferos")
         page.add(container_artropodos())
         page.update()
         return
     
-    #BOTONES DE RESPUESTA A LAS PREGUNTAS
+    #INSTANCIA BOTONES DE RESPUESTA A LAS PREGUNTAS
     
     #Tu organismo es unicelular o multicelular?
     BotonRespuesta_Unicelular = boton_respuesta('Unicelular', on_click = Unicelular)
@@ -242,10 +322,48 @@ def main(page: ft.Page):
     BotonRespuesta_Esqueleto = boton_respuesta('Esqueleto hidrostatico', on_click = Esqueleto)
     BotonRespuesta_Exoesqueleto = boton_respuesta('Exoesqueleto', on_click = Exoesqueleto)
 
-    Pregunta = container_pregunta('Tu organismo es unicelular o multicelular?')
+    Pregunta = container_pregunta(
+        pregunta="¿Tu organismo es unicelular o multicelular?",
+        palabras_enlaces={
+            "unicelular": "https://concepto.de/organismos-unicelulares/",
+            "multicelular": "https://knoow.net/es/ciencias-tierra-vida/biologia-es/organismos-multicelulares/"
+        }
+    )
 
-    page.add(
-        Pregunta,
-        BotonRespuesta_Unicelular,
-        BotonRespuesta_Multicelular) #comando: flet run
-ft.app(main)
+    # Mostrar la primera pregunta y los botones
+    page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
+
+def pagina_resultado(page: ft.Page,contenedor_resultado: ft.Container,phylum: str):
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    resultados = ft.Text("RESULTADOS", size=50, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
+    resultado = 'El Phylum determinado es: ' + phylum
+    phylumDeterminado = ft.Text(resultado,
+                    style=ft.TextStyle(
+                        color=ft.colors.BLUE_GREY_900,
+                        font_family="Roboto Condensed",
+                        weight="bold",
+                        size=28),
+                        text_align = ft.TextAlign.JUSTIFY
+                        )
+    def regresar(e):
+        page.controls.clear()  # Limpiar la página actual
+        pagina_inicio(page)  # Reiniciar el ciclo
+        page.update()
+
+    botonAtras = boton_atras(on_click=regresar)
+
+    page.controls.clear()
+    page.add(resultados, phylumDeterminado,contenedor_resultado,botonAtras)
+    page.update()
+
+
+    return
+# Función para cambiar a la página de identificación
+def mostrar_pagina_identificacion(page: ft.Page):
+    page.controls.clear()  # Limpiar la página actual
+    pagina_identificacion(page)  # Mostrar la página de identificación
+    page.update()
+
+# Ejecutar la aplicación
+ft.app(target=pagina_inicio)
