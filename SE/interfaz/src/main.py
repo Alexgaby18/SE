@@ -16,6 +16,39 @@ from components.container_artropodos import container_artropodos
 from components.container_pregunta import container_pregunta
 from components.boton_respuesta import boton_respuesta
 from components.boton_atras import boton_atras
+import tensorflow as tf
+import numpy as np
+
+modelo = tf.keras.models.load_model("SE/phylum_model_mejorado.h5")
+
+etiquetas_phylum = [
+    "Protozoarios", 
+    "Poríferos", 
+    "Cnidarios", 
+    "Ctenóforos", 
+    "Platelmintos", 
+    "Anélidos", 
+    "Moluscos", 
+    "Artrópodos", 
+    "Cordados",
+    "Equinodermos", 
+    "Nemertinos", 
+    "Acantocefalo", 
+    "Asquelmitos"
+]
+
+def predecir_phylum(caracteristicas):
+    caracteristicas = np.array(caracteristicas).reshape(1, -1)
+    # Realizar la predicción 
+    prediccion_numerica = modelo.predict(caracteristicas)
+    # Obtener el índice de la clase con la mayor probabilidad
+    phylum_indice = np.argmax(prediccion_numerica)
+
+    # Mapear el índice de vuelta a la etiqueta del phylum
+    phylum_predicho = etiquetas_phylum[phylum_indice]
+    # Obtener el porcentaje de certeza
+    certeza = np.max(prediccion_numerica) * 100
+    return {"phylum_predicho": phylum_predicho, "prediccion_numerica": prediccion_numerica, "certeza": certeza}
 
 
 # Página de inicio
@@ -60,16 +93,21 @@ def pagina_identificacion(page: ft.Page):
     page.bgcolor = ft.colors.WHITE #Color de fondo de la ventana
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
+
+    caracteristicas = [0, 0, 0, 0, 0, 0, 0]  # Características del organismo
  
  #FUNCIONES CAPTURADORAS DE EVENTOS DE LOS BOTONES RESPUESTA
     def Unicelular(e):
+        caracteristicas[0] = 0
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Unicelular)
         page.controls.remove(BotonRespuesta_Multicelular)
-        pagina_resultado(page,container_protozoario(),"Protozoario")
+        pagina_resultado(page,container_protozoario(), resultado["phylum_predicho"], resultado["certeza"])
         return
     
     def Multicelular(e):
+        caracteristicas[0] = 1
         # Pregunta.pregunt.value = "Tu organismo posee tejidos verdaderos?"
         Pregunta.actualizar_pregunta(
             "Tu organismo posee tejidos verdadederos?",
@@ -83,13 +121,16 @@ def pagina_identificacion(page: ft.Page):
         return
     
     def No(e):
+        caracteristicas[1] = 0
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_No)
         page.controls.remove(BotonRespuesta_Si)
-        pagina_resultado(page,container_poriferos(),"Poriferos")
+        pagina_resultado(page,container_poriferos(), resultado["phylum_predicho"], resultado["certeza"])
         return
     
     def Si(e):
+        caracteristicas[1] = 1
         # Pregunta.pregunt.value = "Que tipo de simetria tiene tu organismo?"
         Pregunta.actualizar_pregunta(
             "Que tipo de simetria tiene tu organismo?",
@@ -104,15 +145,18 @@ def pagina_identificacion(page: ft.Page):
         return
     
     def RadialSecundario(e):
+        caracteristicas[2] = 0
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialSecundario)
         page.controls.remove(BotonRespuesta_Radial)
         page.controls.remove(BotonRespuesta_Bilateral)
-        pagina_resultado(page,container_equinodermos(),"Equinodermos")
+        pagina_resultado(page,container_equinodermos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
     
     def Radial(e):
+        caracteristicas[2] = 1
         # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
         Pregunta.actualizar_pregunta(
             "Tiene sistema digestivo completo o incompleto?",
@@ -127,6 +171,7 @@ def pagina_identificacion(page: ft.Page):
         return
     
     def Bilateral(e):
+        caracteristicas[2] = 2
         # Pregunta.pregunt.value = "Que tipo de revestimiento tiene?"
         Pregunta.actualizar_pregunta(
             "Que tipo de revestimiento tiene: acelomado, pseudocelomado o celomado?",
@@ -145,22 +190,27 @@ def pagina_identificacion(page: ft.Page):
         return
     
     def RadialCompleto(e):
+        caracteristicas[5] = 1 # Sistema digestivo completo
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        pagina_resultado(page,container_ctenoforos(),"Ctenoforos")
+        pagina_resultado(page,container_ctenoforos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
     
     def RadialIncompleto(e):
+        caracteristicas[5] = 0 # Sistema digestivo incompleto
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_RadialCompleto)
         page.controls.remove(BotonRespuesta_RadialIncompleto)
-        pagina_resultado(page,container_cnidarios(),"Cnidarios")
+        pagina_resultado(page,container_cnidarios(),resultado["phylum_predicho"], resultado["certeza"])
 
         return
 
     def Acelomados(e):
+        caracteristicas[3] = 0
         # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
         Pregunta.actualizar_pregunta(
             "Tiene sistema digestivo completo o incompleto?",
@@ -175,6 +225,7 @@ def pagina_identificacion(page: ft.Page):
         return
     
     def Pseudocelomados(e):
+        caracteristicas[3] = 1
         # Pregunta.pregunt.value = "Tiene sistema digestivo completo o incompleto?"
         Pregunta.actualizar_pregunta(
             "Tiene sistema digestivo completo o incompleto?",
@@ -189,6 +240,7 @@ def pagina_identificacion(page: ft.Page):
         return
 
     def Celomados(e):
+        caracteristicas[3] = 2
         # Pregunta.pregunt.value = "Son esquixocelomados o enterocelomados?"
         Pregunta.actualizar_pregunta(
             "Son esquizocelomados o enterocelomados?",
@@ -204,46 +256,59 @@ def pagina_identificacion(page: ft.Page):
         return
 
     def AcelomadosCompleto(e):
+        caracteristicas[5] = 1 # Sistema digestivo completo
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        pagina_resultado(page,container_nemertinos(),"Nemertinos")
+        pagina_resultado(page,container_nemertinos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
     
     def AcelomadosIncompleto(e):
+        caracteristicas[5] = 0 # Sistema digestivo incompleto
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_AcelomadosCompleto)
         page.controls.remove(BotonRespuesta_AcelomadosIncompleto)
-        pagina_resultado(page,container_platelmintos(),"Platelmintos")
+        pagina_resultado(page,container_platelmintos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
 
     def PseudocelomadosCompleto(e):
+        caracteristicas[5] = 1 # Sistema digestivo completo
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        pagina_resultado(page,container_acantocefalos(),"Acantocefalos")
+        pagina_resultado(page,container_acantocefalos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
 
     def PseudocelomadosIncompleto(e):
+        caracteristicas[5] = 0 # Sistema digestivo incompleto
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_PseudoCelomadosCompleto)
         page.controls.remove(BotonRespuesta_PseudocelomadosIncompleto)
-        pagina_resultado(page,container_asquelmintos(),"Asquelmintos")
+        pagina_resultado(page,container_asquelmintos(), resultado["phylum_predicho"], resultado["certeza"])
 
         return
 
     def Enterocelomados(e):
+        caracteristicas[3] = 2
+        caracteristicas[4] = 2
+        caracteristicas[5] = 1
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_Enterocelomados)
         page.controls.remove(BotonRespuesta_Esquizocelomados)
-        pagina_resultado(page,container_cordados(),"Cordados")
+        pagina_resultado(page,container_cordados(), resultado["phylum_predicho"], resultado["certeza"])
         
         return
     
     def Esquizocelomados(e):
+        caracteristicas[3] = 2
         # Pregunta.pregunt.value = "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?"
         Pregunta.actualizar_pregunta(
             "Tiene manto y concha, esqueleto hidrostatico o exoesqueleto?",
@@ -260,27 +325,38 @@ def pagina_identificacion(page: ft.Page):
         return
 
     def MantoYconcha(e):
+        caracteristicas[4] = 1
+        caracteristicas[5] = 1
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_moluscos(),"Moluscos")
+        pagina_resultado(page,container_moluscos(), resultado["phylum_predicho"], resultado["certeza"])
         return
     
     def Esqueleto(e):
+        caracteristicas[4] = 1
+        caracteristicas[5] = 1
+        caracteristicas[6] = 1
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_anelidos(),"Anelidos")
+        pagina_resultado(page,container_anelidos(), resultado["phylum_predicho"], resultado["certeza"])
         return
     
     def Exoesqueleto(e):
+        caracteristicas[4] = 2
+        caracteristicas[5] = 1
+        caracteristicas[6] = 1
+        resultado = predecir_phylum(caracteristicas)
         page.controls.remove(Pregunta)
         page.controls.remove(BotonRespuesta_MantoYconcha)
         page.controls.remove(BotonRespuesta_Esqueleto)
         page.controls.remove(BotonRespuesta_Exoesqueleto)
-        pagina_resultado(page,container_artropodos(),"Artropodos")
+        pagina_resultado(page,container_artropodos(), resultado["phylum_predicho"], resultado["certeza"])
         return
     
     #INSTANCIA BOTONES DE RESPUESTA A LAS PREGUNTAS
@@ -327,11 +403,11 @@ def pagina_identificacion(page: ft.Page):
     # Mostrar la primera pregunta y los botones
     page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
 
-def pagina_resultado(page: ft.Page,contenedor_resultado: ft.Container,phylum: str):
+def pagina_resultado(page: ft.Page,contenedor_resultado: ft.Container,phylum: str, certeza: float):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     resultados = ft.Text("RESULTADOS", size=50, weight="bold", font_family="Roboto Condensed",color=ft.colors.BLUE_GREY_900)
-    resultado = 'El Phylum determinado es: ' + phylum
+    resultado = f'El Phylum determinado es: {phylum} (Certeza: {certeza:.2f}%)'
     phylumDeterminado = ft.Text(resultado,
                     style=ft.TextStyle(
                         color=ft.colors.BLUE_GREY_900,

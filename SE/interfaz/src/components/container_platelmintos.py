@@ -8,7 +8,7 @@ class container_platelmintos(ft.Container):
                      width= 150,
                      height= 150,
                      fit=ft.ImageFit.FILL),
-            ft.Text('Un platelminto es un gusano plano, como su nombre indica. Son animales invertebrados que se caracterizan por tener un cuerpo aplanado, como una hoja. No tienen cavidad corporal interna y suelen ser hermafroditas, es decir, cada individuo tiene órganos reproductores masculinos y femeninos. Los platelmintos pueden ser de vida libre, como las planarias que encontramos en aguas dulces, o parásitos, como las tenias que viven en el intestino de otros animales, incluyendo a los humanos. A pesar de su apariencia sencilla, los platelmintos son muy diversos y han desarrollado adaptaciones sorprendentes para sobrevivir en diferentes ambientes.',
+            ft.Text('Un platelminto es un gusano plano, como su nombre indica. Son animales invertebrados que se caracterizan por tener un cuerpo aplanado, como una hoja. No tienen cavidad corporal interna y suelen ser hermafroditas, es decir, cada individuo tiene órganos reproductores masculinos y femeninos. ',
                     style=ft.TextStyle(
                         color=ft.colors.BLUE_GREY_900,
                         font_family="Roboto Condensed",
@@ -23,7 +23,7 @@ class container_platelmintos(ft.Container):
         self.margin= 10
         self.padding= 10
         self.bgcolor= ft.Colors.WHITE10
-        self.width= 300
+        self.width= 400
         self.height= 400
         self.border_radius= 10
         self.border = ft.border.all(2,ft.Colors.TEAL_900)
