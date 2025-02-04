@@ -400,8 +400,10 @@ def pagina_identificacion(page: ft.Page):
         }
     )
 
+    gif = ft.Image(src="src/assets/science-doctor.gif", width=200, height=200)
+
     # Mostrar la primera pregunta y los botones
-    page.add(Pregunta, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
+    page.add(Pregunta, gif, BotonRespuesta_Unicelular, BotonRespuesta_Multicelular)
 
 def pagina_resultado(page: ft.Page,contenedor_resultado: ft.Container,phylum: str, certeza: float):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
